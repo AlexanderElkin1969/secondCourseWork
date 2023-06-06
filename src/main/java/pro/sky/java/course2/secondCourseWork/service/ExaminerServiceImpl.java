@@ -18,14 +18,14 @@ public class ExaminerServiceImpl implements ExaminerService {
     @Override
     public Collection<Question> getQuestions(int amount) {
         int size = questionService.getAll().size();
-        if (amount <= 0 || amount > size){
+        if (amount <= 0 || amount > size) {
             throw new IllegalAmountException("Illegal amount.");
         }
-        if (amount == size){
+        if (amount == size) {
             return questionService.getAll();
         }
         int i = 0;
-        Set<Question> questionSet =  new HashSet<>();
+        Set<Question> questionSet = new HashSet<>();
         while (i < amount) {
             questionSet.add(questionService.getRandomQuestion());
             i = questionSet.size();

@@ -8,9 +8,9 @@ import pro.sky.java.course2.secondCourseWork.model.Question;
 import java.util.*;
 
 @Service
-public class JavaQuestionService  implements QuestionService{
+public class JavaQuestionService implements QuestionService {
 
-    private static final List<Question> javaQuestions =  new ArrayList<>(List.of(
+    private static final List<Question> javaQuestions = new ArrayList<>(List.of(
             new Question("question_text_1", "answer_text_1"),
             new Question("question_text_2", "answer_text_2"),
             new Question("question_text_3", "answer_text_3"),
@@ -20,7 +20,7 @@ public class JavaQuestionService  implements QuestionService{
 
     @Override
     public Question add(String question, String answer) {
-        if (StringUtils.isEmpty(question)||StringUtils.isEmpty(answer)){
+        if (StringUtils.isEmpty(question) || StringUtils.isEmpty(answer)) {
             throw new IllegalQuestionException("Question or answer should be not empty");
         }
         return new Question(question, answer);
@@ -28,7 +28,7 @@ public class JavaQuestionService  implements QuestionService{
 
     @Override
     public Question add(Question question) {
-        if (javaQuestions.contains(question)){
+        if (javaQuestions.contains(question)) {
             throw new QuestionAlreadyExistException("Question Already Exist.");
         }
         javaQuestions.add(question);
@@ -37,7 +37,7 @@ public class JavaQuestionService  implements QuestionService{
 
     @Override
     public Question remove(Question question) {
-        if (!javaQuestions.contains(question)){
+        if (!javaQuestions.contains(question)) {
             throw new NotFoundQuestionException("Question not found.");
         }
         javaQuestions.remove(question);
@@ -46,13 +46,13 @@ public class JavaQuestionService  implements QuestionService{
 
     @Override
     public Collection<Question> getAll() {
-        return  List.copyOf(javaQuestions);
+        return List.copyOf(javaQuestions);
     }
 
     @Override
     public Question getRandomQuestion() {
         Random random = new Random();
-        int index = random.nextInt (javaQuestions.size());
+        int index = random.nextInt(javaQuestions.size());
         return javaQuestions.get(index);
     }
 
