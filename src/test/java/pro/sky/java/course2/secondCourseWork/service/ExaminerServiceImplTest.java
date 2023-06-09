@@ -49,8 +49,15 @@ class ExaminerServiceImplTest {
     @Test
     void getQuestionsShouldReturnSet() {
         when(javaQuestionService.getAll()).thenReturn(testQuestions);
+        when(javaQuestionService.getRandomQuestion()).thenReturn(testQuestions.get(4)).
+                thenReturn(testQuestions.get(0)).thenReturn(testQuestions.get(4)).thenReturn(testQuestions.get(1)).
+                thenReturn(testQuestions.get(0)).thenReturn(testQuestions.get(4)).thenReturn(testQuestions.get(2));
         Assertions.assertTrue(out.getQuestions(1).size() == 1);
         verify(javaQuestionService, times(1)).getAll();
+        verify(javaQuestionService, times(1)).getRandomQuestion();
+        Assertions.assertTrue(out.getQuestions(4).size() == 4);
+        verify(javaQuestionService, times(2)).getAll();
+        verify(javaQuestionService, times(7)).getRandomQuestion();
     }
 
 }
