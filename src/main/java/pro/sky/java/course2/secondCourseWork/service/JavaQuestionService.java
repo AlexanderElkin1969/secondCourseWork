@@ -3,6 +3,7 @@ package pro.sky.java.course2.secondCourseWork.service;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import pro.sky.java.course2.secondCourseWork.exception.*;
+import pro.sky.java.course2.secondCourseWork.model.JavaQuestionRepository;
 import pro.sky.java.course2.secondCourseWork.model.Question;
 
 import java.util.*;
@@ -10,13 +11,11 @@ import java.util.*;
 @Service
 public class JavaQuestionService implements QuestionService {
 
-    private static final List<Question> javaQuestions = new ArrayList<>(List.of(
-            new Question("question_text_1", "answer_text_1"),
-            new Question("question_text_2", "answer_text_2"),
-            new Question("question_text_3", "answer_text_3"),
-            new Question("question_text_4", "answer_text_4"),
-            new Question("question_text_5", "answer_text_5")
-    ));
+    private final JavaQuestionRepository javaQuestionRepository;
+
+    public JavaQuestionService(JavaQuestionRepository javaQuestionRepository) {
+        this.javaQuestionRepository = javaQuestionRepository;
+    }
 
     @Override
     public Question add(String question, String answer) {
@@ -28,32 +27,24 @@ public class JavaQuestionService implements QuestionService {
 
     @Override
     public Question add(Question question) {
-        if (javaQuestions.contains(question)) {
-            throw new QuestionAlreadyExistException("Question Already Exist.");
-        }
-        javaQuestions.add(question);
-        return question;
+        return javaQuestionRepository.add(question);
     }
 
     @Override
     public Question remove(Question question) {
-        if (!javaQuestions.contains(question)) {
-            throw new NotFoundQuestionException("Question not found.");
-        }
-        javaQuestions.remove(question);
-        return question;
+        return javaQuestionRepository.remove(question);
     }
 
     @Override
     public Collection<Question> getAll() {
-        return List.copyOf(javaQuestions);
+        return javaQuestionRepository.getAll();
     }
 
     @Override
     public Question getRandomQuestion() {
         Random random = new Random();
-        int index = random.nextInt(javaQuestions.size());
-        return javaQuestions.get(index);
+        int index = random.nextInt(javaQuestionRepository.getSize());
+        return javaQuestionRepository.find(index);
     }
 
 }
