@@ -4,18 +4,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pro.sky.java.course2.secondCourseWork.model.Question;
-import pro.sky.java.course2.secondCourseWork.service.JavaQuestionService;
+import pro.sky.java.course2.secondCourseWork.service.MathQuestionService;
 
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/exam")
-public class JavaQuestionController {
+@RequestMapping("/exam/")
+public class MathQuestionController {
 
-    private final JavaQuestionService javaQuestionService;
+    private final MathQuestionService mathQuestionService;
 
-    public JavaQuestionController(JavaQuestionService javaQuestionService) {
-        this.javaQuestionService = javaQuestionService;
+    public MathQuestionController(MathQuestionService mathQuestionService) {
+        this.mathQuestionService = mathQuestionService;
     }
 
     @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
@@ -27,25 +27,24 @@ public class JavaQuestionController {
                 "для просмотра всех вопросов: /exam/java  (/exam/math)";
     }
 
-    @GetMapping(path = "/java/add")
+    @GetMapping(path = "math/add")
     private Question add(@RequestParam("question") String question,
                          @RequestParam("answer") String answer) {
-        Question temp = javaQuestionService.add(question, answer);
-        return javaQuestionService.add(temp);
+        Question temp = mathQuestionService.add(question, answer);
+        return mathQuestionService.add(temp);
     }
 
-    @GetMapping(path = "/java/remove")
+    @GetMapping(path = "math/remove")
     private Question remove(@RequestParam("question") String question,
                             @RequestParam("answer") String answer) {
-        Question temp = javaQuestionService.add(question, answer);
-        return javaQuestionService.remove(temp);
+        Question temp = mathQuestionService.add(question, answer);
+        return mathQuestionService.remove(temp);
     }
 
-    @GetMapping(path = "/java")
+    @GetMapping(path = "math")
     private Collection<Question> getAll() {
-        return javaQuestionService.getAll();
+        return mathQuestionService.getAll();
     }
-
 
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
