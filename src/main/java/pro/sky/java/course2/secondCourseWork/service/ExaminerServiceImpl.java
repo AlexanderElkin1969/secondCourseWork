@@ -9,26 +9,28 @@ import java.util.*;
 @Service
 public class ExaminerServiceImpl implements ExaminerService {
 
-    private final QuestionService questionService;
+    private final JavaQuestionService javaQuestionService;
 
-    public ExaminerServiceImpl(QuestionService javaQuestionService) {
-        this.questionService = javaQuestionService;
+    private final MathQuestionService mathQuestionService;
+
+    private final Random random;
+
+    public ExaminerServiceImpl(JavaQuestionService javaQuestionService, MathQuestionService mathQuestionService) {
+        this.javaQuestionService = javaQuestionService;
+        this.mathQuestionService = mathQuestionService;
+        this.random = new Random();
     }
 
     @Override
     public Collection<Question> getQuestions(int amount) {
-        int size = questionService.getAll().size();
+        List<QuestionService> questionServices = List.of(javaQuestionService, mathQuestionService);
+        int size = javaQuestionService.getAll().size() + mathQuestionService.getAll().size();
         if (amount <= 0 || amount > size) {
             throw new IllegalAmountException("Illegal amount.");
         }
-        if (amount == size) {
-            return questionService.getAll();
-        }
-        int i = 0;
         Set<Question> questionSet = new HashSet<>();
-        while (i < amount) {
-            questionSet.add(questionService.getRandomQuestion());
-            i = questionSet.size();
+        while (questionSet.size() < amount) {
+            questionSet.add(questionServices.get(random.nextInt(2)).getRandomQuestion());           // 2 число сервисов
         }
         return questionSet;
     }
